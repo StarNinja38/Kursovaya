@@ -1,63 +1,59 @@
-// MainForm.cs
 using System;
 using System.Windows.Forms;
 
-public class MainForm : Form
+namespace DataProtectionApp
 {
-    private TextBox txtInputMessage = new TextBox { Multiline = true, Width = 300, Height = 60 };
-    private TextBox txtPassword = new TextBox { Width = 300, UseSystemPasswordChar = true };
-    private TextBox txtOutputMessage = new TextBox { Multiline = true, Width = 300, Height = 60, ReadOnly = true };
-    private Button btnEncrypt = new Button { Text = "Зашифровать" };
-    private Button btnDecrypt = new Button { Text = "Расшифровать" };
-    private Label lblStatus = new Label { Width = 300 };
-
-    public MainForm()
+    public partial class MainForm : Form
     {
-        this.Text = "Шифрование сообщений";
-        this.Size = new System.Drawing.Size(350, 300);
+        private Encryptor encryptor;
 
-        var layout = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown };
-        layout.Controls.Add(new Label { Text = "Сообщение:" });
-        layout.Controls.Add(txtInputMessage);
-        layout.Controls.Add(new Label { Text = "Пароль:" });
-        layout.Controls.Add(txtPassword);
-        layout.Controls.Add(btnEncrypt);
-        layout.Controls.Add(btnDecrypt);
-        layout.Controls.Add(new Label { Text = "Результат:" });
-        layout.Controls.Add(txtOutputMessage);
-        layout.Controls.Add(lblStatus);
-
-        btnEncrypt.Click += BtnEncrypt_Click;
-        btnDecrypt.Click += BtnDecrypt_Click;
-
-        this.Controls.Add(layout);
-    }
-
-    private void BtnEncrypt_Click(object sender, EventArgs e)
-    {
-        try
+        public MainForm()
         {
-            string encrypted = CryptoService.Encrypt(txtInputMessage.Text, txtPassword.Text);
-            txtOutputMessage.Text = encrypted;
-            lblStatus.Text = "Успешно зашифровано.";
+            InitializeComponent();
         }
-        catch
-        {
-            lblStatus.Text = "Ошибка при шифровании.";
-        }
-    }
 
-    private void BtnDecrypt_Click(object sender, EventArgs e)
-    {
-        try
+        private void btnSetKey_Click(object sender, EventArgs e)
         {
-            string decrypted = CryptoService.Decrypt(txtInputMessage.Text, txtPassword.Text);
-            txtOutputMessage.Text = decrypted;
-            lblStatus.Text = "Успешно расшифровано.";
+            string key = txtKey.Text.Trim();
+            if (string.IsNullOrEmpty(key))
+            {
+                MessageBox.Show("Введите ключ!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            encryptor = new Encryptor(key);
+            MessageBox.Show("Ключ установлен успешно.", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        catch
+
+        private void btnEncrypt_Click(object sender, EventArgs e)
         {
-            lblStatus.Text = "Ошибка при расшифровке. Возможно, неверный пароль.";
+            if (encryptor == null)
+            {
+                MessageBox.Show("Сначала установите ключ.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string input = txtInput.Text;
+            txtResult.Text = encryptor.Encrypt(input);
+        }
+
+        private void btnDecrypt_Click(object sender, EventArgs e)
+        {
+            if (encryptor == null)
+            {
+                MessageBox.Show("Сначала установите ключ.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                string input = txtInput.Text;
+                txtResult.Text = encryptor.Decrypt(input);
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка при расшифровке. Проверьте ключ и формат строки.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
