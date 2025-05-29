@@ -1,0 +1,10 @@
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\bin\Debug\DataProtectionApp.exe.config
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\bin\Debug\DataProtectionApp.exe
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\bin\Debug\DataProtectionApp.pdb
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\obj\Debug\DataProtectionApp.csproj.AssemblyReference.cache
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\obj\Debug\DataProtectionApp.Form1.resources
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\obj\Debug\DataProtectionApp.Properties.Resources.resources
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\obj\Debug\DataProtectionApp.csproj.GenerateResource.cache
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\obj\Debug\DataProtectionApp.csproj.CoreCompileInputs.cache
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\obj\Debug\DataProtectionApp.exe
+C:\Users\mikez\Downloads\DataProtectionApp\DataProtectionApp\obj\Debug\DataProtectionApp.pdb
