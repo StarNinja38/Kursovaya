@@ -1,0 +1,67 @@
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using PasswordLogic;  // Подключаем библиотеку
+
+namespace PasswordChecker
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            
+            // Профессиональная настройка при запуске
+            this.Text = "🔐 Password Security Analyzer Pro";
+            if (adviceLabel != null)
+                adviceLabel.Text = "🔒 Введите пароль для профессионального анализа";
+            if (securityIcon != null)
+                securityIcon.BackColor = Color.LightGray;
+        }
+
+        // Обработчик изменения пароля
+        private void passwordBox_TextChanged(object sender, EventArgs e)
+        {
+            string password = passwordBox.Text;
+            int strength = PasswordHelper.GetStrength(password);
+            string level = PasswordHelper.GetLevel(strength);
+            string advice = PasswordHelper.GetAdvice(password);
+            
+            UpdateInterface(strength, level, advice);
+        }
+
+        // Метод обновления интерфейса
+        private void UpdateInterface(int strength, string level, string advice)
+        {
+            if (strengthBar != null) strengthBar.Value = strength;
+            if (resultLabel != null) resultLabel.Text = $"УРОВЕНЬ: {level} ({strength}%)";
+            if (adviceLabel != null) adviceLabel.Text = advice;
+            
+            // Меняем цвет иконки безопасности
+            if (securityIcon != null)
+            {
+                if (strength < 30) securityIcon.BackColor = Color.Red;
+                else if (strength < 80) securityIcon.BackColor = Color.Orange;  
+                else securityIcon.BackColor = Color.Green;
+            }
+        }
+
+        // Показать/скрыть пароль
+        private void showPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            if (passwordBox != null)
+                passwordBox.UseSystemPasswordChar = !showPassword.Checked;
+        }
+
+        // Очистка полей
+        private void clearBtn_Click(object sender, EventArgs e)
+        {
+            if (passwordBox != null) passwordBox.Clear();
+            if (strengthBar != null) strengthBar.Value = 0;
+            if (resultLabel != null) resultLabel.Text = "Статус: Ожидание ввода";
+            if (adviceLabel != null) adviceLabel.Text = "🔒 Введите пароль для анализа";
+            if (securityIcon != null) securityIcon.BackColor = Color.Gray;
+        }
+    }
+}
